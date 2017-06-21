@@ -26,8 +26,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // please uncomment only 1 choice
 //
-#define ETSI_EUROPE_REGULATION
-//#define FCC_US_REGULATION
+//#define ETSI_EUROPE_REGULATION
+#define FCC_US_REGULATION
 //#define SENEGAL_REGULATION
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 
@@ -42,8 +42,8 @@
 // IMPORTANT
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // please uncomment only 1 choice
-#define BAND868
-//#define BAND900
+//#define BAND868
+#define BAND900
 //#define BAND433
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -186,9 +186,15 @@ void loop(void)
 
   sx1272.setPacketType(PKT_TYPE_DATA);
 
-  r_size=sprintf((char*)message, "Ping");
-      
+  //r_size=sprintf((char*)message, "This is a test");
+  //Testing the sending of values  
+  int i = 0;
+
   while (1) {
+
+      //Constructing a string with a new value of i everytime.
+      i++;
+      r_size=sprintf((char*)message, "\\!Value of i is : %d", i);
 
       PRINT_CSTSTR("%s","Sending Ping");  
       PRINTLN;

@@ -2,7 +2,6 @@
 //By Vincent Gosselin.
 
 //This is using a nice library to simplify the code.
-
 #include "Lora_simplified.h"
 
 void setup()

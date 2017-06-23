@@ -1,4 +1,5 @@
 //Easy library for the LoRa communication from the Arduino.
+//By Vincent Gosselin
 
 #ifndef Lora_simplified_h
 #define Lora_simplified_h

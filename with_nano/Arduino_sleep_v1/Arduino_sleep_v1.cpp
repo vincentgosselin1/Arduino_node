@@ -14,12 +14,17 @@ void loop()
   // Comment off line of code where necessary
 
   // ATmega328P, ATmega168
-  LowPower.idle(SLEEP_8S, ADC_OFF, TIMER2_OFF, TIMER1_OFF, TIMER0_OFF, 
-                SPI_OFF, USART0_OFF, TWI_OFF);
+
+  //IDLE
+  // LowPower.idle(SLEEP_8S, ADC_OFF, TIMER2_OFF, TIMER1_OFF, TIMER0_OFF, 
+  //               SPI_OFF, USART0_OFF, TWI_OFF);
+
+  //PowerDown
+  LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF); 
 
   Serial.begin(38400);
   Serial.println("hello there!");
-  
+
   int i  = 0;
   pinMode(13,OUTPUT);  
 

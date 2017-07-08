@@ -37,11 +37,14 @@
 
 //Pin A0 is used by O3_sensor
 //Analog pin is 10bit definition. Range is 0-1023.
-int analogPin = 0;
+int analogPin0 = 0;
+int analogPin1 = 1;
 
+//Vgas is voltage on pin A0.
+double vgas = 0;
 
-//Vgas is voltage on pin 1.
-int vgas = 0;
+//Vref is voltage on pin A1.
+double vref = 0;
 
 //Vgas0 is 3.3V/2 = 1.65V by default. Solve(X/1023 = 1.65V/5V), X = 338 is baseline.
 //In datasheet of sensor, Vgas0 = 0 when temp is 20oC.
@@ -51,27 +54,41 @@ int temperature = 20;
 
 void setup() {
   // put your setup code here, to run once:
-	Serial.begin(38400);
+	//Serial.begin(38400);
 }
 
 void loop() {
 
 	delay(100);
 
-    // put your main code here, to run repeatedly:
-	vgas = analogRead(analogPin);
-	double vgas_voltage = (double)vgas*5/1023;
-	double delta_vgas = vgas_voltage-VGAS0_VOLTAGE;
-	if(delta_vgas<0){
-		//should not be under 0.
-		delta_vgas = 0;
-	}
-	//Calculations for Cx (concentration in PPM)
-	double Cx;
-	//Pre-temperature compensated
-	Cx = (double)(ONE_DIVIDED_BY_M)*(delta_vgas);
+	//double vgas_total = 0;
+	//double vref_total = 0;
+	// for(int i = 0; i < 500; i++){
+	// 	vgas_total += analogRead(analogPin0);
+	// 	//vref_total += analogRead(analogPin1);
+	// 	//delay(1);
+	// }
 
-	Serial.println(vgas);
+	//vgas = vgas_total/500.0;
+	//vref = vref_total/500.0;
+
+	//Serial.println(vgas);
+	//Serial.println(vref);
+
+    // put your main code here, to run repeatedly:
+	//vgas = analogRead(analogPin0);
+	// double vgas_voltage = (double)vgas*5/1023;
+	// double delta_vgas = vgas_voltage-VGAS0_VOLTAGE;
+	// if(delta_vgas<0){
+	// 	//should not be under 0.
+	// 	delta_vgas = 0;
+	// }
+	// //Calculations for Cx (concentration in PPM)
+	// double Cx;
+	// //Pre-temperature compensated
+	// Cx = (double)(ONE_DIVIDED_BY_M)*(delta_vgas);
+
+	//Serial.println(vgas);
 	//Serial.println(delta_vgas);
 	//Serial.println(Cx);
 	//Serial.println("ppm concentration is %d",Cx);

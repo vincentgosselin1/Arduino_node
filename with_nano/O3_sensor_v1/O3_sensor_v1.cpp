@@ -33,43 +33,43 @@
 
 //Calculation of M
 //#define M SENSITIVITY_CODE*TIA_GAIN*1000/1000000000		
-#define ONE_DIVIDED_BY_M 125.57 //M is originally 0.007964. 
-
+//#define ONE_DIVIDED_BY_M 125.57 //M is originally 0.007964. 
+#define ONE_DIVIDED_BY_M 0.126
 //Pin A0 is used by O3_sensor
 //Analog pin is 10bit definition. Range is 0-1023.
 int analogPin0 = 0;
 int analogPin1 = 1;
 
 //Vgas is voltage on pin A0.
-double vgas = 0;
+//int vgas = 0;
 
 //Vref is voltage on pin A1.
 double vref = 0;
 
 //Vgas0 is 3.3V/2 = 1.65V by default. Solve(X/1023 = 1.65V/5V), X = 338 is baseline.
 //In datasheet of sensor, Vgas0 = 0 when temp is 20oC.
-#define VGAS0_VOLTAGE 1.65
+#define VGAS0_VOLTAGE 1650
 int temperature = 20;
 
 
 void setup() {
   // put your setup code here, to run once:
-	//Serial.begin(38400);
+	Serial.begin(38400);
 }
 
 void loop() {
 
-	delay(100);
+	delay(2000);
 
-	//double vgas_total = 0;
+	int vgas_total = 0;
 	//double vref_total = 0;
-	// for(int i = 0; i < 500; i++){
-	// 	vgas_total += analogRead(analogPin0);
-	// 	//vref_total += analogRead(analogPin1);
-	// 	//delay(1);
-	// }
+	for(int i = 0; i < 50; i++){
+		vgas_total += analogRead(analogPin0);
+		//vref_total += analogRead(analogPin1);
+		delay(20);
+	}
 
-	//vgas = vgas_total/500.0;
+	float vgas = vgas_total/50.0;
 	//vref = vref_total/500.0;
 
 	//Serial.println(vgas);
@@ -77,20 +77,21 @@ void loop() {
 
     // put your main code here, to run repeatedly:
 	//vgas = analogRead(analogPin0);
-	// double vgas_voltage = (double)vgas*5/1023;
-	// double delta_vgas = vgas_voltage-VGAS0_VOLTAGE;
+	float vgas_voltage = (float)vgas*5000.0/1023.0;
+	float delta_vgas = vgas_voltage-VGAS0_VOLTAGE-25;
 	// if(delta_vgas<0){
 	// 	//should not be under 0.
 	// 	delta_vgas = 0;
 	// }
 	// //Calculations for Cx (concentration in PPM)
-	// double Cx;
+	//  Cx;
 	// //Pre-temperature compensated
-	// Cx = (double)(ONE_DIVIDED_BY_M)*(delta_vgas);
+	float Cx = (ONE_DIVIDED_BY_M)*(delta_vgas);
 
-	//Serial.println(vgas);
-	//Serial.println(delta_vgas);
-	//Serial.println(Cx);
+	//Serial.print(vgas_voltage);Serial.print(",");
+	//Serial.print(vgas);Serial.print(",");
+	//Serial.print(delta_vgas);Serial.print(",");
+	Serial.print(Cx);Serial.print(",");
 	//Serial.println("ppm concentration is %d",Cx);
 }
 

@@ -28,13 +28,13 @@ The state machine of the program :
 //DHT11 sensor
 dht11 dht11(2);//PIN 2.
 
-/* Global Variables */
+/* Global Variables */ 
 int temperature;
 int humidity;
 
 void setup()
 {
-  Lora_init();
+  //Lora_init();
   Serial.begin(38400);
   Serial.println("Hello");
 }
@@ -56,7 +56,7 @@ void loop(void)
   // int temperature;
   // int humidity;
   Serial.println("Wake up");
-  //Lora_init();
+  Lora_init();
   // Serial.println("Hello");
 
   //Scan temperature and humidity

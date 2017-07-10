@@ -34,14 +34,16 @@ int humidity;
 
 void setup()
 {
-  //Lora_init();
-  //Serial.println("Hello");
+  Lora_init();
+  Serial.begin(38400);
+  Serial.println("Hello");
 }
 
 void loop(void)
 {
-  //SLEEP for 8sec.
-  LowPower.idle(SLEEP_8S, ADC_OFF, TIMER2_OFF, TIMER1_OFF, TIMER0_OFF, SPI_OFF, USART0_OFF, TWI_OFF);
+  // //SLEEP for 8sec.
+  // LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
+  // delay(50);
   //Serial.begin(38400);
 
 
@@ -53,8 +55,8 @@ void loop(void)
   // /* Global Variables */
   // int temperature;
   // int humidity;
-
-  Lora_init();
+  Serial.println("Wake up");
+  //Lora_init();
   // Serial.println("Hello");
 
   //Scan temperature and humidity
@@ -68,6 +70,13 @@ void loop(void)
   char string[100];
   sprintf(string, "\\!node1:temperature_air=%d:humidity_air=%d", temperature,humidity);
   Lora_send_string(string);
+
+  Serial.println("Die now");
+
+  //SLEEP for 8sec.
+  delay(50);
+  LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
+  delay(50);
      
 }
 

@@ -8,13 +8,13 @@
 		2. VincentRoomMonitoring_v1, sends temp/Humidity to webserver
 		3. arduino_nano_dht11_v2, Temp/Humidity for Air.
 		4. Soil_temp_v2, temp of soil.
+                5. Soil_moisture_v1 humidity sensor
 
 * Work TO BE done
 	1. Program Dust sensor
 	2. Program O3 Sensor (IN THE MAKING)
-	4. Program GPS (IN THE MAKING)
-	5. Program Soil humidity sensor
-	6. Program Luminosity sensor
-	7. Program CO Sensor
+	3. Program GPS (IN THE MAKING)
+	5. Program Luminosity sensor (IN THE MAKING)
+	6. Program CO Sensor (IN THE MAKING)
 
  

@@ -29,8 +29,8 @@ The state machine of the program :
 dht11 dht11(2);//PIN 2.
 
 /* Global Variables */ 
-int temperature;
-int humidity;
+//int temperature;
+//int humidity;
 
 void setup()
 {
@@ -63,8 +63,8 @@ void loop(void)
   dht11.scan();
   //Serial.print("Humidity is : ");Serial.println(dht11.get_humidity(),DEC);
   //Serial.print("Temperature is : ");Serial.println(dht11.get_temperature(),DEC);
-  temperature = dht11.get_temperature();
-  humidity = dht11.get_humidity();
+  int temperature = dht11.get_temperature();
+  int humidity = dht11.get_humidity();
 
   //string to send
   char string[100];

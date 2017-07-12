@@ -55,11 +55,12 @@ int temperature = 20;
 void setup() {
   // put your setup code here, to run once:
 	Serial.begin(38400);
+	Serial.println("hello");
 }
 
 void loop() {
 
-	delay(2000);
+	delay(500);
 
 	int vgas_total = 0;
 	//double vref_total = 0;
@@ -78,12 +79,15 @@ void loop() {
     // put your main code here, to run repeatedly:
 	//vgas = analogRead(analogPin0);
 	float vgas_voltage = (float)vgas*5000.0/1023.0;
-	float delta_vgas = vgas_voltage-VGAS0_VOLTAGE-25;
+	//Serial.print(vgas_voltage);Serial.print(" ");
+
+	float delta_vgas = vgas_voltage-VGAS0_VOLTAGE-25.0;
+
 	// if(delta_vgas<0){
 	// 	//should not be under 0.
 	// 	delta_vgas = 0;
 	// }
-	// //Calculations for Cx (concentration in PPM)
+	// //Calculations for Cx (concentration in PPB)
 	//  Cx;
 	// //Pre-temperature compensated
 	float Cx = (ONE_DIVIDED_BY_M)*(delta_vgas);
@@ -92,6 +96,9 @@ void loop() {
 	//Serial.print(vgas);Serial.print(",");
 	//Serial.print(delta_vgas);Serial.print(",");
 	Serial.print(Cx);Serial.print(",");
+	//Concentration in ppb
+
+
 	//Serial.println("ppm concentration is %d",Cx);
 }
 

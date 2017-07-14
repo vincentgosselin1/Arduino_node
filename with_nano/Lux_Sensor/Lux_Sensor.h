@@ -9,6 +9,8 @@
 #endif
 
 #include <Wire.h>
+
+//FROM https://github.com/adafruit/TSL2561-Arduino-Library
 #include "TSL2561.h"
 
 class LUX{

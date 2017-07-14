@@ -2,27 +2,32 @@
 #include <SoftwareSerial.h>
 #include <TinyGPS.h>
 
-//Fil bleu sur D4 et fil vert sur D3
-GPS gps_sensor(4,3);
+//Fil bleu sur D4 et fil vert sur D3 
+//GPS gps_sensor(4,3);
+
+//Maintenant, Fil bleu (TX) sur D8 , fil vert (RX) sur D9.
+GPS gps_sensor(8,9);
+
 float lat;
 float lon;
 void setup()
 {
-  Serial.begin(115200);
-
+  //Serial.begin(115200);
+  Serial.begin(38400);
 }
 
 void loop()
 {
  
+ delay(5000);
   if(gps_sensor.scan()){
     lat = gps_sensor.get_lat();
     lon = gps_sensor.get_lon();
     
     Serial.print("LAT : ");
-    Serial.print(lat);
+    Serial.print(lat,6);//6 decimals.
     Serial.print("  LON : ");
-    Serial.println(lon);
+    Serial.println(lon,6);
   }
   
   else{

@@ -4,7 +4,7 @@
 MQ7::MQ7(int PWM_pin, int reading_pin){
 
 	pinMode(PWM_pin, OUTPUT);
-	pinMode(reading_pin, INPUT);
+	//pinMode(reading_pin, INPUT);, not required.
 	
 	_PWM_pin = PWM_pin;
 	_reading_pin = reading_pin;

@@ -10,16 +10,26 @@
 
 #Source
 source1 = File.readlines(Dir.pwd+"/Arduino_sleep_v1.cpp")
+source2 = File.readlines(Dir.pwd+"/libraries/Low-Power/LowPower.cpp")
+source3 = File.readlines(Dir.pwd+"/libraries/Low-Power/LowPower.h")
 
 
 
 #Destination files
 destionation1 = "/Users/vincentgosselin/Documents/Arduino/Arduino_sleep_v1/Arduino_sleep_v1.ino"
+destionation2 = "/Users/vincentgosselin/Documents/Arduino/libraries/Low-Power/LowPower.cpp"
+destionation3 = "/Users/vincentgosselin/Documents/Arduino/libraries/Low-Power/LowPower.h"
 
 
 #COPY-PASTE
 File.open(destionation1, "w") do |f|
 	f.puts source1
+end
+File.open(destionation2, "w") do |f|
+	f.puts source2
+end
+File.open(destionation3, "w") do |f|
+	f.puts source3
 end
 
 

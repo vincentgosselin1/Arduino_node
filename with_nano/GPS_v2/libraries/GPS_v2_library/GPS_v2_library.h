@@ -1,15 +1,10 @@
+//GPS_v2_library.h library.
 
-#ifndef GPS_h
-#define GPS_h
+#define GPS_v2_library_h
 
-#if ARDUINO >= 100
 #include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
-
 #include <SoftwareSerial.h>
-#include <TinyGPS.h>
+#include <TinyGPS_v2.h>
 
 class GPS{
 
@@ -30,11 +25,10 @@ class GPS{
 		int _TX;
 		int _RX;
 		
-		SoftwareSerial ss;
-		TinyGPS gps;
+		SoftwareSerial *_ss;
+		TinyGPS *_gps;
 	
 	};
 
-#endif
 
 

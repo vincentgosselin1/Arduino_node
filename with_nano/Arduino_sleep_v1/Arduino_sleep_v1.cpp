@@ -5,6 +5,7 @@ void setup()
 {
   // No setup is required for this library
 	//Serial.begin(38400);
+  //Serial.begin(38400);
 }
 
 void loop() 
@@ -23,21 +24,24 @@ void loop()
   LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF); 
 
   Serial.begin(38400);
+  delay(1000);
+  
   Serial.println("hello there!");
+  delay(1000);
 
-  int i  = 0;
-  pinMode(13,OUTPUT);  
+  // int i  = 0;
+  // pinMode(13,OUTPUT);  
 
-  //Flash LED 10 times
-  while(i<10){
-    digitalWrite(13,0);  
-    delay(200);
-    digitalWrite(13,1);  
-    delay(200);
-    i++;
-  }
+  // //Flash LED 10 times
+  // while(i<10){
+  //   digitalWrite(13,0);  
+  //   delay(200);
+  //   digitalWrite(13,1);  
+  //   delay(200);
+  //   i++;
+  // }
 
-  digitalWrite(13,0);  
+  // digitalWrite(13,0);  
 
   // ATmega32U4
   //LowPower.idle(SLEEP_8S, ADC_OFF, TIMER4_OFF, TIMER3_OFF, TIMER1_OFF, 

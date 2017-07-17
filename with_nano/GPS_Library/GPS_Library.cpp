@@ -7,7 +7,7 @@ GPS::GPS(int RX, int TX) : ss(SoftwareSerial(RX, TX)){
 	_TX = TX;
 	_RX = RX;
 
-	ss.begin(9600);
+	//ss.begin(9600);
 	
 	TinyGPS gps;
 	
@@ -22,7 +22,10 @@ GPS::GPS(int RX, int TX) : ss(SoftwareSerial(RX, TX)){
 int GPS::scan(){
 	
 	// For one second we parse GPS data and report some key values
-	
+
+	//init software serial
+	ss.begin(9600);
+
 	new_data =0;
 	
 	for (unsigned long start = millis(); millis() - start < 1000;)
@@ -37,6 +40,9 @@ int GPS::scan(){
 	}
 	
 	gps.f_get_position(&lat, &lon, &age);
+
+	//close Software Serial
+	ss.end();
 
 	return new_data;
 }

@@ -39,7 +39,7 @@ The state machine of the program :
 //watchdog_counter = 49 for 0.85min.
 //watchdog_counter = 98 for 1.7min on Grafana
 //watchdog_counter = 490 for 8.43min on Grafana.
-//watchdog_counter = 3350 for 58min? on grafana TO BE PROVED! if thats it we are done!
+//watchdog_counter = 3350 for 58min? Actually equals to 57min30sec. Close Enough!
 volatile unsigned int watchdog_counter = 3350;
 
 ISR(WDT_vect) {

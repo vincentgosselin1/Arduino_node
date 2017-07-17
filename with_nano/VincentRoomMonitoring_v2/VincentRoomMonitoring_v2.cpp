@@ -36,7 +36,11 @@ The state machine of the program :
 #include <arduino_nano_DFR0198.h>
 
 //For Deep sleep
-volatile unsigned int watchdog_counter = 48;
+//watchdog_counter = 49 for 0.85min.
+//watchdog_counter = 98 for 1.7min on Grafana
+//watchdog_counter = 490 for 8.43min on Grafana.
+//watchdog_counter = 3350 for 58min? on grafana TO BE PROVED! if thats it we are done!
+volatile unsigned int watchdog_counter = 3350;
 
 ISR(WDT_vect) {
   watchdog_counter++;
@@ -95,7 +99,12 @@ void setup()
 void loop(void)
 {
   //This is equivalent to precicely 30 secs somehow. Needs to be calibrated.
-  if((watchdog_counter > 49)){
+  //watchdog_counter = 49 for 0.85min.
+  //watchdog_counter = 98 for 1.7min on Grafana
+  //watchdog_counter = 490 for 8.43min on Grafana.
+  //watchdog_counter = 3350 for 58min? on grafana TO BE PROVED! if thats it we are done!
+
+  if((watchdog_counter > 3350)){
 
     sleep_disable(); 
     ADCSRA |= (1<<ADEN); //Enable ADC
@@ -266,11 +275,14 @@ void sensor_node_execute(void){
   //sprintf(string, "\\!node1:A=%s:B=%s",O3_concentration_string,dust_concentration_string);
   //sprintf(string, "\\!node1:A=%s",O3_concentration_string);
   //sprintf(string, "\\!node1:A=%s",lat_string);
-  char string[75];
 
-  sprintf(string, "\\!node1:A=%d:B=%d:C=%s,%s:D=%d:E=%d:F=%d:G=%d:H=%d", 
-                    O3_concentration,dust_concentration, lat_string, lon_string, 
-                     lux, soil_humidity, soil_temperature, air_humidity, air_temperature);
+  char string[75];
+  sprintf(string, "\\!node1:temperature_air=%d:humidity_air=%d", air_temperature,air_humidity);
+ 
+  //The one to send for all sensors
+  // sprintf(string, "\\!node1:A=%d:B=%d:C=%s,%s:D=%d:E=%d:F=%d:G=%d:H=%d", 
+  //                   O3_concentration,dust_concentration, lat_string, lon_string, 
+  //                    lux, soil_humidity, soil_temperature, air_humidity, air_temperature);
 
   Lora_send_string(string);
 

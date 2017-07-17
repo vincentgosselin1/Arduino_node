@@ -30,7 +30,7 @@ The state machine of the program :
 //#include "GPS_Library.h" <- definitly cannot use, breaks the whole thing...
 #include "Lux_Sensor.h" 
 //#include "Lux_sensor_library_v2" <- actually worse in memory usage
-#include "MQ7_Sensor.h"
+//#include "MQ7_Sensor.h"
 #include "O3_spec_sensor.h"
 #include "arduino_soil_moisture.h"
 #include <arduino_nano_DFR0198.h>
@@ -102,7 +102,7 @@ void loop(void)
   //watchdog_counter = 49 for 0.85min.
   //watchdog_counter = 98 for 1.7min on Grafana
   //watchdog_counter = 490 for 8.43min on Grafana.
-  //watchdog_counter = 3350 for 58min? on grafana TO BE PROVED! if thats it we are done!
+  //watchdog_counter = 3350 for 58min? Actually equals to 57min30sec. Close Enough!
 
   if((watchdog_counter > 3350)){
 
@@ -277,12 +277,12 @@ void sensor_node_execute(void){
   //sprintf(string, "\\!node1:A=%s",lat_string);
 
   char string[75];
-  sprintf(string, "\\!node1:temperature_air=%d:humidity_air=%d", air_temperature,air_humidity);
+  // sprintf(string, "\\!node1:temperature_air=%d:humidity_air=%d", air_temperature,air_humidity);
  
   //The one to send for all sensors
-  // sprintf(string, "\\!node1:A=%d:B=%d:C=%s,%s:D=%d:E=%d:F=%d:G=%d:H=%d", 
-  //                   O3_concentration,dust_concentration, lat_string, lon_string, 
-  //                    lux, soil_humidity, soil_temperature, air_humidity, air_temperature);
+  sprintf(string, "\\!node1:A=%d:B=%d:C=%s,%s:D=%d:E=%d:F=%d:G=%d:H=%d", 
+                    O3_concentration,dust_concentration, lat_string, lon_string, 
+                     lux, soil_humidity, soil_temperature, air_humidity, air_temperature);
 
   Lora_send_string(string);
 

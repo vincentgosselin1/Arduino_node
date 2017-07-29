@@ -2,7 +2,7 @@
 By Vincent Gosselin, 2017.
 
 The following is a program to monitor
-all the sensors execpt CO sensor in Vincent's Room.
+all the sensors execpt CO, LUX sensor in Vincent's Room.
 
 The state machine of the program :
 1 : Deep sleep (0.27mA) for 30sec
@@ -28,7 +28,7 @@ The state machine of the program :
 #include "sharp_dust_sensor.h"
 #include "GPS_v2_library.h"// Successfully reduced Dynamic memory usage from 26% to 19% in this version.
 //#include "GPS_Library.h" <- definitly cannot use, breaks the whole thing...
-#include "Lux_Sensor.h" 
+//#include "Lux_Sensor.h" 
 //#include "Lux_sensor_library_v2" <- actually worse in memory usage
 //#include "MQ7_Sensor.h"
 #include "O3_spec_sensor.h"
@@ -76,7 +76,7 @@ sharp_dust_sensor sharp_dust_sensor(4);
 //GPS. Pin config: blue wire (TX) on D8 , green wire (RX) on D9.
 GPS gps_sensor(8,9);
 //Luminosity sensor. Pin config: (I2C protocol) SDA to A4, SCL to A5
-LUX lux_sensor;
+//LUX lux_sensor;
 //Soil moisture sensor. Pin config : Pin A1.
 soil_moisture soil_moisture(1);
 //Soil temperature sensor. Pin config :  Pin D3.
@@ -87,6 +87,9 @@ dht11 dht11(2);
 //Main function to scan sensor/send with LoRa module.
 void sensor_node_execute(void);
 
+//EnableSensor Pin
+//pinMode(6, OUTPUT);
+
 void setup()
 {
   //Lora_init();
@@ -94,6 +97,12 @@ void setup()
   //Serial.println("Hello y'all");
   //Serial.begin(38400);
   //setup_watchdog(6); //Setup watchdog to go off after 1sec
+
+  //EnableSensor Pin
+  //pinMode(6, OUTPUT);
+
+
+  //digitalWrite(6, LOW);
 }
 
 void loop(void)
@@ -111,11 +120,24 @@ void loop(void)
 
     watchdog_counter = 0;
 
-    delay(1000);
-    Serial.begin(38400);
-    delay(1000);
+    //delay(1000);
+    //Serial.begin(38400);
+    //delay(1000);
 
+    //Active les lignes 3V,3.3V,5V pour les sensors
+    pinMode(6, OUTPUT);
+    digitalWrite(6, 1);
+
+    //GPS needs time to be ready for aquiring.
+    //It's about 40 secs in my room.
+    delay(40000);
+
+    //Execute le sensor node.
     sensor_node_execute();
+
+    //Desactive les lignes 3V,3.3V,5V pour les sensors
+    digitalWrite(6, 0);
+
     //Serial.println("hello there!");
     delay(1000);
 
@@ -165,8 +187,8 @@ void sensor_node_execute(void){
   delay(1000);
 
   // //Luminosity sensor
-  lux_sensor.scan();
-  delay(1000);
+  //lux_sensor.scan();
+  //delay(1000);
 
   //Soil moisture
   soil_moisture.scan();
@@ -208,7 +230,8 @@ void sensor_node_execute(void){
   int dust_concentration = (int)sharp_dust_sensor.get_concentration(); //in micro gram per cubic meter.
   float lat = gps_sensor.get_lat();
   float lon = gps_sensor.get_lon();
-  unsigned int lux = lux_sensor.get_lux();
+  //unsigned int lux = lux_sensor.get_lux();
+  unsigned int lux = 0;
   int soil_humidity = soil_moisture.get_moisture();
   int soil_temperature = (int)DFR0198.get_temperature();
   int air_humidity = dht11.get_humidity();

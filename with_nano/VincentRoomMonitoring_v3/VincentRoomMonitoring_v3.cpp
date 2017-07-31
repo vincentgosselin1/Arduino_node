@@ -53,6 +53,8 @@ The state machine of the program :
 //volatile unsigned int watchdog_counter = 3350;
 volatile unsigned int long_watchdog_counter = ONE_HOUR_TIMEOUT;
 volatile unsigned int short_watchdog_counter = 0;
+//volatile unsigned int long_watchdog_counter = 0;
+//volatile unsigned int short_watchdog_counter = TEN_MINUTES_TIMEOUT;
 
 ISR(WDT_vect) {
   //watchdog_counter++;
@@ -286,7 +288,12 @@ void short_sensor_node_execute(void){
   //unsigned int lux = lux_sensor.get_lux();
   unsigned int lux = 0;
   int soil_humidity = soil_moisture.get_moisture();
-  int soil_temperature = (int)DFR0198.get_temperature();
+
+  float soil_temperature = DFR0198.get_temperature();
+  //need to convert float to string
+  char soil_temperature_string[15];
+  dtostrf(soil_temperature,7, 1, soil_temperature_string);
+
   int air_humidity = dht11.get_humidity();
   int air_temperature = dht11.get_temperature();
   int battery_life = 99;
@@ -311,8 +318,10 @@ void short_sensor_node_execute(void){
   // sprintf(string, "\\!node1:temperature_air=%d:humidity_air=%d", air_temperature,air_humidity);
  
   //The one to send for all sensors
-  sprintf(string, "\\!node1:D=%d:E=%d:F=%d:G=%d:H=%d:I=%d", 
-                    lux, soil_humidity, soil_temperature, air_humidity, air_temperature,battery_life);
+  // sprintf(string, "\\!node1:D=%d:E=%d:F=%d:G=%d:H=%d:I=%d", 
+  //                   lux, soil_humidity, soil_temperature, air_humidity, air_temperature,battery_life);
+  sprintf(string, "\\!node1:D=%d:E=%d:F=%s:G=%d:H=%d:I=%d", 
+                    lux, soil_humidity, soil_temperature_string, air_humidity, air_temperature,battery_life);
 
   Lora_send_string(string);
 

@@ -14,8 +14,7 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(38400);
   Serial.println("Hello");
-  
-  
+
 }
 
 void loop() {
@@ -30,12 +29,12 @@ void loop() {
   float air_temperature = dht22.get_temperature();
 
   char air_humidity_string[15] = {0};
-  dtostrf(air_humidity,7, 1, air_humidity_string);
+  dtostrf(air_humidity,5, 1, air_humidity_string);
 
   char air_temperature_string[15] = {0};
-  dtostrf(air_temperature,7, 1, air_temperature_string);
+  dtostrf(air_temperature,5, 1, air_temperature_string);
 
 
-  Serial.print("Humidity is : ");Serial.print(air_humidity_string);
-  Serial.print("Temperature is : ");Serial.print(air_temperature_string);
+  Serial.print("Humidity is : ");Serial.println(air_humidity_string);
+  Serial.print("Temperature is : ");Serial.println(air_temperature_string);
 }

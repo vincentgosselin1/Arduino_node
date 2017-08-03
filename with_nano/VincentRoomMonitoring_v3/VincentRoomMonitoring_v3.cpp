@@ -25,7 +25,8 @@ The state machine of the program :
 #include <avr/interrupt.h>
 
 //All the custom libraries
-#include "arduinonanodht11.h"
+//#include "arduinonanodht11.h"
+#include "arduinonanodht22.h" // <- DHT22 definately better!
 #include "sharp_dust_sensor.h"
 #include "GPS_v2_library.h"// Successfully reduced Dynamic memory usage from 26% to 19% in this version.
 //#include "GPS_Library.h" <- definitly cannot use, breaks the whole thing...
@@ -98,7 +99,10 @@ soil_moisture soil_moisture(1);
 //Soil temperature sensor. Pin config :  Pin D3.
 DFR0198 DFR0198(3);
 //DHT11 sensor for temperature + humidity. Using pin D2.
-dht11 dht11(2);
+//dht11 dht11(2);
+//DHT22 sensor for temperature + humidity. Using pin D2.
+dht22 dht22(2);
+
 
 //Two Main function to scan sensor/send with LoRa module.
 //long_sensor_node_execute sends O3,Dust,GPS. 
@@ -278,7 +282,7 @@ void short_sensor_node_execute(void){
   delay(2000);
 
   //Scan temperature and humidity
-  dht11.scan();
+  dht22.scan();
   delay(2000);
 
   /* Sensor done scanning */
@@ -287,6 +291,7 @@ void short_sensor_node_execute(void){
 
   //unsigned int lux = lux_sensor.get_lux();
   unsigned int lux = 0;
+
   int soil_humidity = soil_moisture.get_moisture();
 
   float soil_temperature = DFR0198.get_temperature();
@@ -294,8 +299,17 @@ void short_sensor_node_execute(void){
   char soil_temperature_string[15];
   dtostrf(soil_temperature,7, 1, soil_temperature_string);
 
-  int air_humidity = dht11.get_humidity();
-  int air_temperature = dht11.get_temperature();
+  //int air_humidity = dht11.get_humidity();
+  //int air_temperature = dht11.get_temperature();
+  float air_humidity = dht22.get_humidity();
+  float air_temperature = dht22.get_temperature();
+
+  char air_humidity_string[15] = {0};
+  dtostrf(air_humidity,5, 1, air_humidity_string);
+
+  char air_temperature_string[15] = {0};
+  dtostrf(air_temperature,5, 1, air_temperature_string);
+
   int battery_life = 99;
 
   //LoRA Communication
@@ -320,8 +334,10 @@ void short_sensor_node_execute(void){
   //The one to send for all sensors
   // sprintf(string, "\\!node1:D=%d:E=%d:F=%d:G=%d:H=%d:I=%d", 
   //                   lux, soil_humidity, soil_temperature, air_humidity, air_temperature,battery_life);
-  sprintf(string, "\\!node1:D=%d:E=%d:F=%s:G=%d:H=%d:I=%d", 
-                    lux, soil_humidity, soil_temperature_string, air_humidity, air_temperature,battery_life);
+  // sprintf(string, "\\!node1:D=%d:E=%d:F=%s:G=%d:H=%d:I=%d", 
+  //                   lux, soil_humidity, soil_temperature_string, air_humidity, air_temperature,battery_life);
+  sprintf(string, "\\!node1:D=%d:E=%d:F=%s:G=%s:H=%s:I=%d", 
+                    lux, soil_humidity, soil_temperature_string, air_humidity_string, air_temperature_string,battery_life);
 
   Lora_send_string(string);
 

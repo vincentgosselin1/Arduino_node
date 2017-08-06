@@ -53,9 +53,9 @@ The state machine of the program :
 //watchdog_counter = 3350 for 58min? Actually equals to 57min30sec. Close Enough!
 //volatile unsigned int watchdog_counter = 3350;
 volatile unsigned int long_watchdog_counter = ONE_HOUR_TIMEOUT;
-volatile unsigned int short_watchdog_counter = 0;
+//volatile unsigned int short_watchdog_counter = 0;
 //volatile unsigned int long_watchdog_counter = 0;
-//volatile unsigned int short_watchdog_counter = TEN_MINUTES_TIMEOUT;
+volatile unsigned int short_watchdog_counter = TEN_MINUTES_TIMEOUT;
 
 ISR(WDT_vect) {
   //watchdog_counter++;
@@ -112,7 +112,11 @@ void long_sensor_node_execute(void);
 void short_sensor_node_execute(void);
 
 void setup()
-{}
+{
+  //Solar pannel control mosfet on D7, NOT USED.
+  pinMode(7, OUTPUT);
+  digitalWrite(7, 0);
+}
 
 void loop(void)
 {
@@ -292,12 +296,14 @@ void short_sensor_node_execute(void){
   //unsigned int lux = lux_sensor.get_lux();
   unsigned int lux = 0;
 
-  int soil_humidity = soil_moisture.get_moisture();
+  //Off by 10% RH, calibrated with DHT22.
+  int soil_humidity = soil_moisture.get_moisture()+10;
+  
 
-  float soil_temperature = DFR0198.get_temperature();
-  //need to convert float to string
-  char soil_temperature_string[15];
-  dtostrf(soil_temperature,7, 1, soil_temperature_string);
+  // float soil_temperature = DFR0198.get_temperature();
+  // //need to convert float to string
+  // char soil_temperature_string[15];
+  // dtostrf(soil_temperature,7, 1, soil_temperature_string);
 
   //int air_humidity = dht11.get_humidity();
   //int air_temperature = dht11.get_temperature();
@@ -310,7 +316,23 @@ void short_sensor_node_execute(void){
   char air_temperature_string[15] = {0};
   dtostrf(air_temperature,5, 1, air_temperature_string);
 
-  int battery_life = 99;
+  float soil_temperature = DFR0198.get_temperature();
+  //get ride of weird error on first reading.
+  if(soil_temperature>80){
+    soil_temperature = air_temperature-2.0;
+  }
+  //need to convert float to string
+  char soil_temperature_string[15];
+  dtostrf(soil_temperature,7, 1, soil_temperature_string);
+
+  //int battery_life = 99; Battery voltage on PIN A3.
+  //analogRead outputs a value from 0-1023 depending on Voltage.
+  //Battery max voltage is 3.7V, 2600mAh. Value is divided by 2 with a voltage divider.
+  float battery_life = (((float)analogRead(3))*5.0/1024.0)*2.0;
+  //Adjusting, reading was 3.88 and supposed to be 3.70
+  battery_life = (battery_life - 0.20)*0.97;
+  char battery_life_string[15] = {0};
+  dtostrf(battery_life,7, 2, battery_life_string);
 
   //LoRA Communication
   // A -> O3 concentration
@@ -328,7 +350,8 @@ void short_sensor_node_execute(void){
   // "\\!node1:A=%d:B=%d:C=%d:D=%d:E=%d:F=%d:G=%d:H=%d:I=%d"
 
   //String to send
-  char string[75] = {0};
+  //char string[75] = {0};
+  char string[150] = {0};
   // sprintf(string, "\\!node1:temperature_air=%d:humidity_air=%d", air_temperature,air_humidity);
  
   //The one to send for all sensors
@@ -336,8 +359,10 @@ void short_sensor_node_execute(void){
   //                   lux, soil_humidity, soil_temperature, air_humidity, air_temperature,battery_life);
   // sprintf(string, "\\!node1:D=%d:E=%d:F=%s:G=%d:H=%d:I=%d", 
   //                   lux, soil_humidity, soil_temperature_string, air_humidity, air_temperature,battery_life);
-  sprintf(string, "\\!node1:D=%d:E=%d:F=%s:G=%s:H=%s:I=%d", 
-                    lux, soil_humidity, soil_temperature_string, air_humidity_string, air_temperature_string,battery_life);
+  // sprintf(string, "\\!node1:D=%d:E=%d:F=%s:G=%s:H=%s:I=%d", 
+  //                   lux, soil_humidity, soil_temperature_string, air_humidity_string, air_temperature_string,battery_life);
+  sprintf(string, "\\!node1:D=%d:E=%d:F=%s:G=%s:H=%s:I=%s", 
+                    lux, soil_humidity, soil_temperature_string, air_humidity_string, air_temperature_string,battery_life_string);
 
   Lora_send_string(string);
 

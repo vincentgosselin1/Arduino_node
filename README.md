@@ -23,7 +23,7 @@ Here is the circuitry inside the Stevenson Cage:
 ![the_whole_thing](https://user-images.githubusercontent.com/16928726/29093455-e90f69e0-7c57-11e7-80f1-716bd4409998.JPG)
 
 Here is the Raspberry Pi Gateway to receive/send data:
-![rasp](https://user-images.githubusercontent.com/16928726/29094226-93257954-7c5a-11e7-94da-9a2da1cd18cb.JPG)
+![raspgithub](https://user-images.githubusercontent.com/16928726/29094369-166655cc-7c5b-11e7-8d36-807ad8b1e19a.png)
 
 The PCBs and electronics circuits were made using the KiCad software.
 

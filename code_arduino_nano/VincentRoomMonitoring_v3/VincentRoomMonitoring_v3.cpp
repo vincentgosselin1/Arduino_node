@@ -205,6 +205,8 @@ void long_sensor_node_execute(void){
   /* Preparing LoRa transmission */
   int O3_concentration = (int)O3_spec_sensor.get_concentration(); //in ppb.
   int dust_concentration = (int)sharp_dust_sensor.get_concentration(); //in micro gram per cubic meter.
+  //There is a significative association. Currently dust sensor kills program if does not anwser back.
+  //int dust_concentration = 46+O3_concentration;
   float lat = gps_sensor.get_lat();
   float lon = gps_sensor.get_lon();
 
@@ -260,6 +262,10 @@ void long_sensor_node_execute(void){
   Lora_send_string(string);
 
   delay(1000);
+
+  //Take out MOSI and CS on LoRaModule. Put them to ground.
+  digitalWrite(11, 0);//pin D11 is MOSI
+  digitalWrite(10, 0);//pin D10 is MOSI
 
   //End serial communication
   Serial.end();
@@ -330,7 +336,7 @@ void short_sensor_node_execute(void){
   //Battery max voltage is 3.7V, 2600mAh. Value is divided by 2 with a voltage divider.
   float battery_life = (((float)analogRead(3))*5.0/1024.0)*2.0;
   //Adjusting, reading was 3.88 and supposed to be 3.70
-  battery_life = (battery_life - 0.20)*0.97;
+  battery_life = (battery_life - 0.16)*0.97;
   char battery_life_string[15] = {0};
   dtostrf(battery_life,7, 2, battery_life_string);
 
@@ -367,6 +373,10 @@ void short_sensor_node_execute(void){
   Lora_send_string(string);
 
   delay(1000);
+
+  //Take out MOSI and CS on LoRaModule. Put them to ground.
+  digitalWrite(11, 0);//pin D11 is MOSI
+  digitalWrite(10, 0);//pin D10 is MOSI
 
   //End serial communication
   Serial.end();

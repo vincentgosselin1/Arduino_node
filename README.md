@@ -1,20 +1,14 @@
 
 
-# This is the code for Arduino_node.
-## Please insert the code you have produced inside a folder with the type of uC.
-* Work done at the moment 
-	* with_nano
-		1. Arduino_LoRa_Ping_Pong_v2, to send data from Arduino up to the webserver
-		2. VincentRoomMonitoring_v1, sends temp/Humidity to webserver
-		3. arduino_nano_dht11_v2, Temp/Humidity for Air.
-		4. Soil_temp_v2, temp of soil.
-                5. Soil_moisture_v1 humidity sensor
+# This is the BELIOT project
+This is an Internet Of Things project.
+This project contains an Arduino Nano which is the core microcontroller of module.
+The module contains an RF module (inAir9B) with LoRaWAN technology.
+Features : 
+- soil humidity/temperature
+- air humidity/temperature
 
-* Work TO BE done
-	1. Program Dust sensor
-	2. Program O3 Sensor (IN THE MAKING)
-	3. Program GPS (IN THE MAKING)
-	5. Program Luminosity sensor (IN THE MAKING)
-	6. Program CO Sensor (IN THE MAKING)
+![beliot_pic](https://user-images.githubusercontent.com/16928726/29093577-4a29306c-7c58-11e7-8864-ddb7ac480732.png)
+
 
  

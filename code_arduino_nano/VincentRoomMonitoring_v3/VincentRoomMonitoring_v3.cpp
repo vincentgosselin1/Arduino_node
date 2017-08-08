@@ -47,15 +47,17 @@ The state machine of the program :
 #define FIVE_MINUTES_TIMEOUT 300 // IN SECONDES
 #define TEN_MINUTES_TIMEOUT 600 
 #define ONE_HOUR_TIMEOUT 3600
+#define THIRTY_SECONDES_TIMEOUT 30
 //watchdog_counter = 49 for 0.85min.
 //watchdog_counter = 98 for 1.7min on Grafana
 //watchdog_counter = 490 for 8.43min on Grafana.
 //watchdog_counter = 3350 for 58min? Actually equals to 57min30sec. Close Enough!
 //volatile unsigned int watchdog_counter = 3350;
-volatile unsigned int long_watchdog_counter = ONE_HOUR_TIMEOUT;
+//volatile unsigned int long_watchdog_counter = ONE_HOUR_TIMEOUT;
 //volatile unsigned int short_watchdog_counter = 0;
-//volatile unsigned int long_watchdog_counter = 0;
-volatile unsigned int short_watchdog_counter = TEN_MINUTES_TIMEOUT;
+volatile unsigned int long_watchdog_counter = 0;
+//volatile unsigned int short_watchdog_counter = TEN_MINUTES_TIMEOUT;
+volatile unsigned int short_watchdog_counter = THIRTY_SECONDES_TIMEOUT;
 
 ISR(WDT_vect) {
   //watchdog_counter++;
@@ -147,7 +149,7 @@ void loop(void)
   }
 
   //Scanning Soil humidity, soil temperature, air humidity, air temperature, battery voltage.
-  if((short_watchdog_counter > TEN_MINUTES_TIMEOUT)){
+  if((short_watchdog_counter > THIRTY_SECONDES_TIMEOUT)){
 
     sleep_disable(); 
     ADCSRA |= (1<<ADEN); //Enable ADC

@@ -3,8 +3,11 @@
 # This is the BELIOT project
 This is an Internet Of Things project.
 This project contains an Arduino Nano which is the core microcontroller of module.
-The module contains an RF module (inAir9B) with LoRaWAN technology.
-Features : 
+The module contains an RF circuit (inAir9B) with LoRaWAN technology. This node sends
+data to a Raspberry Pi via RF and the Raspberry Pi posts its data to a Webserver.
+Webserver is beliotv3.herokuapp.com
+
+This unit monitores : 
 - soil humidity/temperature
 - air humidity/temperature
 
